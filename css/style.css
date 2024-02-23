@@ -1,0 +1,62 @@
+
+
+body {
+    display: block;
+    background-color: #FFFDF5;
+}
+
+div.container {
+    margin: 5px auto 5px auto;
+}
+
+nav {
+    background: #22376D;
+    color: #ffffff;
+    margin-bottom: 3rem;
+}
+.navbar {
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.bg-navy {
+    background: #22376D !important;
+    box-shadow: #01172E -2px 7px 9px;
+}
+
+.bx-shad {
+    box-shadow: -2px 4px 6px rgb(68, 68, 68);
+}
+
+.ribbon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #02006c;
+  padding: 10px;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.ribbon a {
+  color: #FFD102;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h1, h2 {
+  color: #FFD102;
+  text-shadow: 2px 2px black;
+}
+
+p {
+  color: white;
+}
+
+form {
+  color: white;
+  font-size: 20px;
+  text-shadow: 2px 2px black;
+}

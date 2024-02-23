@@ -1,0 +1,60 @@
+body {
+  margin-top: 50px;
+  text-align: center;
+  border: 3px solid white;
+  background-color: #00457c;
+}
+
+.ribbon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #02006c;
+  padding: 10px;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.ribbon a {
+  color: #FFD102;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h1, h2 {
+  color: #FFD102;
+  text-shadow: 2px 2px black;
+}
+
+p {
+  color: white;
+}
+
+form {
+  color: white;
+  font-size: 20px;
+  text-shadow: 2px 2px black;
+}
+
+div {
+  font-size: 20px;
+  background-color: white column-count: 3;
+  column-gap: 40px;
+  color: #FFD102;
+  text-shadow: 1px 1px black;
+}
+
+.container {
+  width: 30%;
+  margin: 20px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  float: left;
+}
+
+#container1, #container2, #container3 {
+  background-color: #055aa0;
+}
