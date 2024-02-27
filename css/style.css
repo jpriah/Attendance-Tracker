@@ -1,6 +1,7 @@
 
 
 body {
+    font-family: 'Arial', sans-serif;
     display: block;
     background-color: #FFFDF5;
 }
@@ -41,22 +42,20 @@ nav {
 }
 
 .ribbon a {
-  color: #FFD102;
+  color: #121212;
   text-decoration: none;
   font-weight: bold;
 }
 
 h1, h2 {
-  color: #FFD102;
-  text-shadow: 2px 2px black;
+    color: #121212;
 }
 
 p {
-  color: white;
+    color: #282828;
 }
 
 form {
-  color: white;
-  font-size: 20px;
-  text-shadow: 2px 2px black;
+    color: #282828;
+    font-size: 20px;
 }
