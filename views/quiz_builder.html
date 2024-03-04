@@ -12,7 +12,7 @@
     <div class="container-fluid bg-navy">
         <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="../index.html">WPU Appstore</a>
+                <a class="navbar-brand" href="#">WPU Appstore</a>
                 <img src="../icon/wpulogo.png" alt="WPU Logo" width="100" />
             </div>
         </nav>
@@ -22,12 +22,8 @@
             <div class="col">
                 <div id="quiz-container">
                     <h1>Quiz Builder</h1>
-                    <div id="question-container">
-                        <p id="question-text">Loading question...</p>
-                        <div id="answer-buttons" class="btn-container"></div>
-                    </div>
-                    <button id="next-button" class="btn" onclick="nextQuestion()">Next</button>
-                    <div id="create-question-form" style="display: none;">
+                    <div id="container-contents"></div>
+                    <!-- <div id="create-question-form" style="display: none;">
                         <h2>Create Your Own Question</h2>
                         <form onsubmit="addCustomQuestion(event)">
                             <label for="custom-question">Question:</label>
@@ -36,8 +32,9 @@
                             <input type="text" id="custom-answers" required>
                             <button type="submit" class="btn btn-outline-dark">Add Question</button>
                         </form>
-                    </div>
-                    <button id="create-question-button" class="btn btn-outline-dark" onclick="toggleCreateQuestionForm()">Create Your Own Question</button>
+                    </div> -->
+                    <button class="btn btn-outline-dark" onclick="loadHTMLPage('../partials/_MultipleChoice.html', 'container-contents')">Create Your Own Question</button>
+                    <button class="btn btn-outline-dark" onclick="loadHTMLPage('../partials/_QuestionViewer.html', 'container-contents')">View Questions</button>
                 </div>
             </div>
             <div class="col">
@@ -59,5 +56,6 @@
         </div>
     </div>
     <script src="../scripts/quiz_script.js"></script>
+    <script src="../scripts/html_loader.js"></script>
 </body>
 </html>
