@@ -1,4 +1,4 @@
-const questions = [
+var questions = [
     {
         question: 'What is the capital of France?',
         answers: [
@@ -11,17 +11,17 @@ const questions = [
     // Add more questions as needed
 ];
 
-let currentQuestionIndex = 0;
+var currentQuestionIndex = 0;
 
-const questionTextElement = document.getElementById('question-text');
-const answerButtonsElement = document.getElementById('answer-buttons');
+var questionTextElement = document.getElementById('question-text');
+var answerButtonsElement = document.getElementById('answer-buttons');
 
-const sidebar = document.getElementById('sidebar');
-const questionList = document.getElementById('question-list');
+var sidebar = document.getElementById('sidebar');
+var questionList = document.getElementById('question-list');
 
-const editQuestionForm = document.getElementById('edit-question-form');
-const editedQuestionInput = document.getElementById('edited-question');
-const editedAnswersInput = document.getElementById('edited-answers');
+var editQuestionForm = document.getElementById('edit-question-form');
+var editedQuestionInput = document.getElementById('edited-question');
+var editedAnswersInput = document.getElementById('edited-answers');
 
 function startQuiz() {
     currentQuestionIndex = 0;
@@ -93,7 +93,7 @@ function updateSidebar() {
 
     questions.forEach((question, index) => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Question ${index + 1}`;
+        listItem.textContent = question.question;
         listItem.addEventListener('click', () => loadQuestionForEdit(index));
         questionList.appendChild(listItem);
     });

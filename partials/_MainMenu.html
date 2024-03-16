@@ -1,0 +1,16 @@
+<div class="row">
+    <button id="multiChoiceBtn" class="btn btn-outline-dark" onclick="loadHTMLPage('../partials/_MultipleChoice.html', '#container-contents')">Multiple Choice</button>
+    <button id="viewQ" class="btn btn-outline-dark">View Questions</button>
+</div>
+<script>
+$("#viewQ").click(function(){
+    $("#view-questions").toggle();
+    $("#multiChoiceBtn").toggle();
+    $("#viewQ").toggle();
+    $("#viewQBack").toggle();
+});
+
+$("#multiChoiceBtn").click(function(){
+        loadHTMLPage('../partials/_MultipleChoice.html', '#container-contents');
+    })
+</script>
