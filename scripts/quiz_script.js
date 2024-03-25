@@ -1,15 +1,4 @@
-var questions = [
-    {
-        question: 'What is the capital of France?',
-        answers: [
-            { text: 'Paris', correct: true },
-            { text: 'Berlin', correct: false },
-            { text: 'Madrid', correct: false },
-            { text: 'Rome', correct: false }
-        ]
-    },
-    // Add more questions as needed
-];
+var questions = [];
 
 var currentQuestionIndex = 0;
 
@@ -146,6 +135,74 @@ function saveEditedQuestion(event) {
 
     // Refresh the sidebar
     updateSidebar();
+}
+
+function saveQuiz() {
+    // Convert questions array to JSON string
+    const jsonData = JSON.stringify(questions);
+
+    // Create a Blob object with the JSON data
+    const blob = new Blob([jsonData], { type: 'application/json' });
+
+    // Create a temporary URL for the Blob
+    const url = URL.createObjectURL(blob);
+
+    // Create a link element
+    const link = document.createElement('a');
+
+    // Set link properties
+    link.href = url;
+    link.download = 'quiz_data.json'; // Specify filename
+
+    // Append the link to the document body
+    document.body.appendChild(link);
+
+    // Simulate a click on the link to trigger the download
+    link.click();
+
+    // Remove the link from the document body
+    document.body.removeChild(link);
+
+    // Revoke the URL to release the resources
+    URL.revokeObjectURL(url);
+}
+
+function loadQuiz() {
+    // Create an input element of type file
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json'; // Allow only JSON files
+
+    // Trigger a click event on the input element
+    input.click();
+
+    // Add event listener to handle file selection
+    input.addEventListener('change', function() {
+        // Get the selected file
+        const file = input.files[0];
+
+        // Create a file reader
+        const reader = new FileReader();
+
+        // Define event listener to handle file reading
+        reader.onload = function(event) {
+            // Parse the JSON data
+            const jsonData = event.target.result;
+            const parsedData = JSON.parse(jsonData);
+
+            // Update questions array with loaded data
+            questions = parsedData;
+
+            // Refresh the sidebar with loaded questions
+            updateSidebar();
+
+            // Optionally, you can start the quiz immediately
+            startQuiz();
+        };
+
+        // Read the file as text
+        reader.readAsText(file);
+    });
 }
 
 updateSidebar();
