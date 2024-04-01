@@ -1,0 +1,35 @@
+#quiz-container {
+    text-align: center;
+    width: 400px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn:hover {
+    background-color: #ddd;
+}
+
+/* Add styles for the correct answer */
+.correct-answer {
+    background-color: #aaffa0; /* Light green background for correct answer */
+    font-weight: bold; /* Bold font for correct answer */
+}
+
+/* Style the asterisk for the correct answer in edit mode */
+#edited-answers::after {
+    content: '*'; /* Display asterisk after correct answer */
+    color: red; /* Color asterisk red */
+}
