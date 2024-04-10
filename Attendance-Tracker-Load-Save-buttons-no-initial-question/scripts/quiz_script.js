@@ -14,6 +14,7 @@ var editedAnswersInput = document.getElementById('edited-answers');
 
 function startQuiz() {
     currentQuestionIndex = 0;
+    correctAnswersCount = 0; // Reset correctAnswersCount
     showQuestion(questions[currentQuestionIndex]);
 }
 
@@ -36,7 +37,8 @@ function showQuestion(question) {
 var correctAnswersCount = 0; // Variable to store the count of correct answers
 
 function selectAnswer(answer) {
-    if (answer.correct) {
+    // Check if the selected answer is correct and the quiz hasn't finished
+    if (answer.correct && currentQuestionIndex < questions.length) {
         correctAnswersCount++; // Increment correctAnswersCount if the selected answer is correct
     }
 
@@ -85,13 +87,27 @@ function addCustomQuestion(event) {
     }
 }
 
+// Function to update the sidebar with questions
 function updateSidebar() {
     questionList.innerHTML = '';
 
     questions.forEach((question, index) => {
         const listItem = document.createElement('li');
-        listItem.textContent = question.question;
-        listItem.addEventListener('click', () => loadQuestionForEdit(index));
+        const button = document.createElement('button');
+        button.textContent = "Edit Question";
+        button.addEventListener('click', () => {
+            loadQuestionForEdit(index);
+            // Reset currentQuestionIndex to 0 when navigating back to view questions
+            currentQuestionIndex = 0;
+        });
+        if (currentQuestionIndex !== index) {
+            if (question.answers.some(answer => answer.correct)) {
+                button.classList.add('correct-answer'); // Add 'correct-answer' class if the question has a correct answer
+            }
+        }
+        listItem.appendChild(button);
+        listItem.appendChild(document.createTextNode(' ')); // Add space
+        listItem.appendChild(document.createTextNode(question.question));
         questionList.appendChild(listItem);
     });
 }
