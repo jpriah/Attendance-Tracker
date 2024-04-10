@@ -93,8 +93,16 @@ function updateSidebar() {
 
     questions.forEach((question, index) => {
         const listItem = document.createElement('li');
+        const orderedAnswerListItem = document.createElement('ol');
+        orderedAnswerListItem.setAttribute('type', 'a')
         listItem.textContent = question.question;
         listItem.addEventListener('click', () => loadQuestionForEdit(index));
+        question.answers.forEach((answers, index) => {
+            const answerListItem = document.createElement('li');
+            answerListItem.textContent = answers["text"];
+            orderedAnswerListItem.appendChild(answerListItem)
+        });
+        listItem.appendChild(orderedAnswerListItem)
         questionList.appendChild(listItem);
     });
 }
