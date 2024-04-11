@@ -14,6 +14,7 @@ var editedAnswersInput = document.getElementById('edited-answers');
 
 function startQuiz() {
     currentQuestionIndex = 0;
+    correctAnswersCount = 0; // Reset correctAnswersCount
     showQuestion(questions[currentQuestionIndex]);
 }
 
@@ -25,21 +26,30 @@ function showQuestion(question) {
         const button = document.createElement('button');
         button.innerText = answer.text;
         button.classList.add('btn');
+        if (answer.correct) {
+            button.classList.add('correct-answer'); // Add a class to highlight correct answer
+        }
         button.addEventListener('click', () => selectAnswer(answer));
         answerButtonsElement.appendChild(button);
     });
 }
 
+var correctAnswersCount = 0; // Variable to store the count of correct answers
+
 function selectAnswer(answer) {
-    // You can add more logic here, e.g., check if the answer is correct
-    // For simplicity, let's just move to the next question
+    // Check if the selected answer is correct and the quiz hasn't finished
+    if (answer.correct && currentQuestionIndex < questions.length) {
+        correctAnswersCount++; // Increment correctAnswersCount if the selected answer is correct
+    }
+
+    // Move to the next question
     currentQuestionIndex++;
     
     if (currentQuestionIndex < questions.length) {
         showQuestion(questions[currentQuestionIndex]);
     } else {
         // Quiz finished
-        alert('Quiz finished!');
+        alert('Quiz finished! You got ' + correctAnswersCount + ' out of ' + questions.length + ' correct answers.');
         // You can add more actions or redirect to another page
     }
 }
@@ -77,13 +87,27 @@ function addCustomQuestion(event) {
     }
 }
 
+// Function to update the sidebar with questions
 function updateSidebar() {
     questionList.innerHTML = '';
 
     questions.forEach((question, index) => {
         const listItem = document.createElement('li');
-        listItem.textContent = question.question;
-        listItem.addEventListener('click', () => loadQuestionForEdit(index));
+        const button = document.createElement('button');
+        button.textContent = "Edit Question";
+        button.addEventListener('click', () => {
+            loadQuestionForEdit(index);
+            // Reset currentQuestionIndex to 0 when navigating back to view questions
+            currentQuestionIndex = 0;
+        });
+        if (currentQuestionIndex !== index) {
+            if (question.answers.some(answer => answer.correct)) {
+                button.classList.add('correct-answer'); // Add 'correct-answer' class if the question has a correct answer
+            }
+        }
+        listItem.appendChild(button);
+        listItem.appendChild(document.createTextNode(' ')); // Add space
+        listItem.appendChild(document.createTextNode(question.question));
         questionList.appendChild(listItem);
     });
 }
@@ -94,21 +118,19 @@ function loadQuestionForEdit(index) {
 
     // Populate the edit form with the current question's details
     editedQuestionInput.value = questions[currentQuestionIndex].question;
-    editedAnswersInput.value = questions[currentQuestionIndex].answers.map(answer => answer.text).join(', ');
-
-    // Populate the select box with answer choices
-    const correctAnswerSelect = document.getElementById('correct-answer');
-    correctAnswerSelect.innerHTML = ''; // Clear previous options
-
-    questions[currentQuestionIndex].answers.forEach((answer, index) => {
-        const option = document.createElement('option');
-        option.value = index.toString(); // Use the index as the value
-        option.textContent = answer.text;
-        correctAnswerSelect.appendChild(option);
-    });
     
+    // Display answers with asterisk for the correct answer in the edit form
+    const editedAnswers = questions[currentQuestionIndex].answers.map(answer => {
+        return answer.correct ? answer.text + '*' : answer.text;
+    }).join(', ');
+    editedAnswersInput.value = editedAnswers;
+
     // Show the edit form
     editQuestionForm.style.display = 'block';
+
+    // Attach event listener to the "Save Changes" button
+    const saveChangesButton = document.querySelector('#edit-question-form button[type="submit"]');
+    saveChangesButton.addEventListener('click', saveEditedQuestion);
 }
 
 function addCustomQuestion(event) {
@@ -117,15 +139,41 @@ function addCustomQuestion(event) {
     const customQuestionInput = document.getElementById('custom-question');
     const customAnswersInput = document.getElementById('custom-answers');
 
+    // Split the input into answers
+    const answersArray = customAnswersInput.value.split(',');
+    
+    // Initialize an array to store parsed answers
+    const parsedAnswers = [];
+
+    // Loop through each answer
+    answersArray.forEach(answer => {
+        // Trim the answer text
+        const trimmedAnswer = answer.trim();
+        
+        // Check if the answer ends with an asterisk
+        const isCorrect = trimmedAnswer.endsWith('*');
+        
+        // Remove the asterisk and trim again if present
+        const answerText = isCorrect ? trimmedAnswer.slice(0, -1).trim() : trimmedAnswer;
+
+        // Push the answer object to the parsedAnswers array
+        parsedAnswers.push({ text: answerText, correct: isCorrect });
+    });
+
+    // Create the new question object
     const newQuestion = {
         question: customQuestionInput.value,
-        answers: customAnswersInput.value.split(',').map(answer => ({ text: answer.trim(), correct: false }))
+        answers: parsedAnswers
     };
 
+    // Add the new question to the questions array
     questions.push(newQuestion);
+
+    // Clear input fields
     customQuestionInput.value = '';
     customAnswersInput.value = '';
     
+    // Update the sidebar with the new question
     updateSidebar();
     
     // If it's the first custom question, start the quiz
@@ -139,13 +187,58 @@ function saveEditedQuestion(event) {
 
     // Update the current question with the edited details
     questions[currentQuestionIndex].question = editedQuestionInput.value;
-    questions[currentQuestionIndex].answers = editedAnswersInput.value.split(',').map(answer => ({ text: answer.trim(), correct: false }));
+
+    // Extract answers from the editedAnswersInput
+    const editedAnswers = editedAnswersInput.value.split(',').map(answer => ({ text: answer.trim().replace(/\*$/, ''), correct: answer.trim().endsWith('*') }));
+
+    // Update the answers array of the current question
+    questions[currentQuestionIndex].answers = editedAnswers;
 
     // Hide the edit form
     editQuestionForm.style.display = 'none';
 
     // Refresh the sidebar
     updateSidebar();
+
+    // Show the updated question in the view questions section
+    showQuestion(questions[currentQuestionIndex]);
+}
+
+function updateViewQuestions() {
+    const viewQuestionsButtons = document.querySelectorAll('#question-list li button');
+    viewQuestionsButtons[currentQuestionIndex].classList.remove('correct-answer'); // Remove previous correct-answer class
+    questions[currentQuestionIndex].answers.forEach((answer, index) => {
+        if (answer.correct) {
+            viewQuestionsButtons[currentQuestionIndex].classList.add('correct-answer'); // Add correct-answer class to the new correct answer
+        }
+    });
+}
+
+function loadQuestionForEdit(index) {
+    currentQuestionIndex = index;
+    showQuestion(questions[currentQuestionIndex]);
+
+    // Populate the edit form with the current question's details
+    editedQuestionInput.value = questions[currentQuestionIndex].question;
+
+    // Clear previous content of editedAnswersInput
+    editedAnswersInput.value = '';
+
+    // Display answers with asterisk for the correct answer in the edit form
+    questions[currentQuestionIndex].answers.forEach((answer, index) => {
+        const asterisk = answer.correct ? '*' : '';
+        editedAnswersInput.value += answer.text + asterisk + (index !== questions[currentQuestionIndex].answers.length - 1 ? ', ' : '');
+    });
+
+    // Show the edit form
+    editQuestionForm.style.display = 'block';
+
+    // Attach event listener to the "Save Changes" button
+    const saveChangesButton = document.querySelector('#edit-question-form button[type="submit"]');
+    saveChangesButton.addEventListener('click', function(event) {
+        saveEditedQuestion(event);
+        updateViewQuestions();
+    });
 }
 
 function saveQuiz() {
