@@ -21,3 +21,15 @@
 .btn:hover {
     background-color: #ddd;
 }
+
+/* Add styles for the correct answer */
+.correct-answer {
+    background-color: #aaffa0; /* Light green background for correct answer */
+    font-weight: bold; /* Bold font for correct answer */
+}
+
+/* Style the asterisk for the correct answer in edit mode */
+#edited-answers::after {
+    content: '*'; /* Display asterisk after correct answer */
+    color: red; /* Color asterisk red */
+}

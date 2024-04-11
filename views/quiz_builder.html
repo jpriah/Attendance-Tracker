@@ -24,15 +24,17 @@
         <div class="row">
             <div class="col">
                 <div id="quiz-container">
+                    <button id="load-button" class="btn btn-outline-dark" onclick="loadQuiz()">Load Quiz</button>
+                    <button id="save-button" class="btn btn-outline-dark" onclick="saveQuiz()">Save Quiz</button>
                     <h1>Quiz Builder</h1>
                     <div id="view-questions" style="display: none;">
                         <div id="question-container">
-                            <p id="question-text">Loading question...</p>
+                            <p id="question-text">No Questions Added</p>
                             <div id="answer-buttons" class="btn-container"></div>
                         </div>
                         <div class="row col">
                             <button id="next-button" class="btn btn-outline-dark" onclick="nextQuestion()">Next</button>
-                            <button id="viewQBack" class="btn btn-outline-dark" style="display: none;">Home</button>
+                            <button id="viewQBack" class="btn btn-outline-dark" style="display: none;">Back</button>
                         </div>
                     </div>
                     <div id="container-contents">
@@ -45,23 +47,14 @@
             </div>
             <div class="col">
                 <div id="sidebar">
-                    <div class="row">
-                        <div class="col">
-                            <h2>Your Questions</h2>
-                        </div>
-                        <div class="col">
-                            <button id="to-word" class="btn btn-outline-dark">Export Quiz(DOCX)</button>
-                        </div>
-                        
-                    </div>
-                    
-                    <ol id="question-list"></ol>
+                    <h2>Your Questions</h2>
+                    <ul id="question-list"></ul>
                     <div id="edit-question-form" style="display: none;">
                         <h2>Edit Question</h2>
                         <form onsubmit="saveEditedQuestion(event)">
                             <label for="edited-question">Question:</label>
                             <div class="row"><input type="text" id="edited-question" required></div>
-                            <label for="edited-answers">Answers (comma-separated):</label>
+                            <label for="edited-answers">Answers (comma-separated, asterisk correct answer):</label>
                             <input type="text" id="edited-answers" required>
                             <button type="submit" class="btn btn-outline-dark">Save Changes</button>
                         </form>
