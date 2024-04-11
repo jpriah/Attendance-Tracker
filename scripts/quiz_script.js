@@ -93,21 +93,22 @@ function updateSidebar() {
 
     questions.forEach((question, index) => {
         const listItem = document.createElement('li');
-        const button = document.createElement('button');
-        button.textContent = "Edit Question";
-        button.addEventListener('click', () => {
-            loadQuestionForEdit(index);
-            // Reset currentQuestionIndex to 0 when navigating back to view questions
-            currentQuestionIndex = 0;
+        listItem.addEventListener('click', () => loadQuestionForEdit(index));
+        const orderedAnswerListItem = document.createElement('ol');
+        orderedAnswerListItem.setAttribute('type', 'a')
+        listItem.textContent = question.question;
+        listItem.addEventListener('click', () => loadQuestionForEdit(index));
+        question.answers.forEach((answers, index) => {
+            const answerListItem = document.createElement('li');
+            answerListItem.textContent = answers["text"];
+            orderedAnswerListItem.appendChild(answerListItem)
         });
         if (currentQuestionIndex !== index) {
             if (question.answers.some(answer => answer.correct)) {
                 button.classList.add('correct-answer'); // Add 'correct-answer' class if the question has a correct answer
             }
         }
-        listItem.appendChild(button);
-        listItem.appendChild(document.createTextNode(' ')); // Add space
-        listItem.appendChild(document.createTextNode(question.question));
+        listItem.appendChild(orderedAnswerListItem)
         questionList.appendChild(listItem);
     });
 }
