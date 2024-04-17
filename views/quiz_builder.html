@@ -34,7 +34,7 @@
                         </div>
                         <div class="row col">
                             <button id="next-button" class="btn btn-outline-dark" onclick="nextQuestion()">Next</button>
-                            <button id="viewQBack" class="btn btn-outline-dark" style="display: none;">Back</button>
+                            <button id="viewQBack" class="btn btn-outline-dark" style="display: none;">Home</button>
                         </div>
                     </div>
                     <div id="container-contents">
@@ -47,16 +47,8 @@
             </div>
             <div class="col">
                 <div id="sidebar">
-                    <div class="row">
-                        <div class="col">
-                            <h2>Your Questions</h2>
-                        </div>
-                        <div class="col">
-                            <button id="to-word" class="btn btn-outline-dark">Export Quiz(DOCX)</button>
-                        </div>
-                        
-                    </div>
-                    <ol id="question-list"></ul>
+                    <h2>Your Questions</h2>
+                    <ul id="question-list"></ul>
                     <div id="edit-question-form" style="display: none;">
                         <h2>Edit Question</h2>
                         <form onsubmit="saveEditedQuestion(event)">
