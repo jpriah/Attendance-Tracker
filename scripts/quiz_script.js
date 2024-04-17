@@ -93,22 +93,44 @@ function updateSidebar() {
 
     questions.forEach((question, index) => {
         const listItem = document.createElement('li');
-        listItem.addEventListener('click', () => loadQuestionForEdit(index));
-        const orderedAnswerListItem = document.createElement('ol');
-        orderedAnswerListItem.setAttribute('type', 'a')
-        listItem.textContent = question.question;
-        listItem.addEventListener('click', () => loadQuestionForEdit(index));
-        question.answers.forEach((answers, index) => {
-            const answerListItem = document.createElement('li');
-            answerListItem.textContent = answers["text"];
-            orderedAnswerListItem.appendChild(answerListItem)
+        const questionText = document.createElement('span');
+        questionText.textContent = question.question;
+        questionText.classList.add('edit-question'); // Add a class for styling and event handling
+        questionText.addEventListener('click', () => {
+            loadQuestionForEdit(index);
+            // Reset currentQuestionIndex to 0 when navigating back to view questions
+            currentQuestionIndex = 0;
         });
-        if (currentQuestionIndex !== index) {
-            if (question.answers.some(answer => answer.correct)) {
-                button.classList.add('correct-answer'); // Add 'correct-answer' class if the question has a correct answer
+
+        // Append question text to list item
+        listItem.appendChild(questionText);
+
+        // Add button to toggle answers visibility
+        const toggleButton = document.createElement('button');
+        toggleButton.textContent = '↓';
+        toggleButton.classList.add('toggle-answers-button');
+        toggleButton.addEventListener('click', () => {
+            const answerList = listItem.querySelector('ol');
+            if (answerList.style.display === 'none') {
+                answerList.style.display = 'block';
+                toggleButton.textContent = '↑';
+            } else {
+                answerList.style.display = 'none';
+                toggleButton.textContent = '↓';
             }
-        }
-        listItem.appendChild(orderedAnswerListItem)
+        });
+        listItem.appendChild(toggleButton);
+
+        // Add answers under the question (hidden by default)
+        const orderedAnswerList = document.createElement('ol');
+        question.answers.forEach((answer) => {
+            const answerListItem = document.createElement('li');
+            answerListItem.textContent = answer.text;
+            orderedAnswerList.appendChild(answerListItem);
+        });
+        orderedAnswerList.style.display = 'none'; // Hide answers by default
+        listItem.appendChild(orderedAnswerList);
+
         questionList.appendChild(listItem);
     });
 }
@@ -212,33 +234,6 @@ function updateViewQuestions() {
         if (answer.correct) {
             viewQuestionsButtons[currentQuestionIndex].classList.add('correct-answer'); // Add correct-answer class to the new correct answer
         }
-    });
-}
-
-function loadQuestionForEdit(index) {
-    currentQuestionIndex = index;
-    showQuestion(questions[currentQuestionIndex]);
-
-    // Populate the edit form with the current question's details
-    editedQuestionInput.value = questions[currentQuestionIndex].question;
-
-    // Clear previous content of editedAnswersInput
-    editedAnswersInput.value = '';
-
-    // Display answers with asterisk for the correct answer in the edit form
-    questions[currentQuestionIndex].answers.forEach((answer, index) => {
-        const asterisk = answer.correct ? '*' : '';
-        editedAnswersInput.value += answer.text + asterisk + (index !== questions[currentQuestionIndex].answers.length - 1 ? ', ' : '');
-    });
-
-    // Show the edit form
-    editQuestionForm.style.display = 'block';
-
-    // Attach event listener to the "Save Changes" button
-    const saveChangesButton = document.querySelector('#edit-question-form button[type="submit"]');
-    saveChangesButton.addEventListener('click', function(event) {
-        saveEditedQuestion(event);
-        updateViewQuestions();
     });
 }
 
